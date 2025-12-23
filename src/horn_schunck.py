@@ -9,6 +9,7 @@ from utils.utils import evaluate
 INPUT_DIR = "mickey_original"
 OUTPUT_DIR = "output_horn"
 SIZE = (960, 720)
+
 SCALE = 1.0
 
 def local_average(Z):
@@ -119,24 +120,9 @@ def main():
         cv2.imwrite(os.path.join(OUTPUT_DIR, f"img_{out_idx:04d}.png"), img1)
         out_idx += 1
 
-        # eval
-        mse, psnr, ssim_score = evaluate(img_mid, img1)
-
-        mse_list.append(mse)
-        psnr_list.append(psnr)
-        ssim_list.append(ssim_score)
-
-        print(f"  MSE  : {mse:.2f}")
-        print(f"  PSNR : {psnr:.2f} dB")
-        print(f"  SSIM : {ssim_score:.4f}")
-
-
         img_prev = img1 # for the next frame
 
-    print("\n===== RESULTS =====")
-    print(f"MSE  mean : {np.mean(mse_list):.2f}")
-    print(f"PSNR mean : {np.mean(psnr_list):.2f} dB")
-    print(f"SSIM mean : {np.mean(ssim_list):.4f}")
+    print(" Done !")
 
 if __name__ == "__main__":
     main()
