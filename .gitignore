@@ -1,8 +1,6 @@
 env_interpolation/
 output/
-output_farneback/
-output/
-output_horn/
+cat_anim/
 movies/
 mickey_original/
 __pycache__/
