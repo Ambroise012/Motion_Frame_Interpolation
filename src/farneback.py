@@ -8,7 +8,7 @@ from utils.utils import evaluate
 
 INPUT_DIR = "mickey_original"
 OUTPUT_DIR = "output_farneback"
-SIZE = (512, 512)
+SIZE = (960, 720)
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -39,13 +39,13 @@ for i in range(len(image_paths) - 1):
     flow = cv2.calcOpticalFlowFarneback(
         gray0, gray1,
         None,
-        pyr_scale=0.5,
-        levels=4,
-        winsize=21,
-        iterations=5,
-        poly_n=7,
-        poly_sigma=1.5,
-        flags=cv2.OPTFLOW_FARNEBACK_GAUSSIAN
+        pyr_scale=0.7,
+        levels=2,
+        winsize=7,
+        iterations=10,
+        poly_n=5,
+        poly_sigma=1.0,
+        flags=0
     )
 
     u = flow[..., 0]
@@ -84,20 +84,6 @@ for i in range(len(image_paths) - 1):
     cv2.imwrite(os.path.join(OUTPUT_DIR, f"img_{out_idx:04d}.png"), img1)
     out_idx += 1
 
-    # eval
-    mse, psnr, ssim_score = evaluate(mid, img1)
-
-    mse_list.append(mse)
-    psnr_list.append(psnr)
-    ssim_list.append(ssim_score)
-
-    print(f"  MSE  : {mse:.2f}")
-    print(f"  PSNR : {psnr:.2f} dB")
-    print(f"  SSIM : {ssim_score:.4f}")
-
     img_prev = img1
 
-print("\n===== RESULTS =====")
-print(f"MSE  mean : {np.mean(mse_list):.2f}")
-print(f"PSNR mean : {np.mean(psnr_list):.2f} dB")
-print(f"SSIM mean : {np.mean(ssim_list):.4f}")
+print("Done !")
