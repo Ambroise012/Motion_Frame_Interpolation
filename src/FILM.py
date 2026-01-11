@@ -16,7 +16,6 @@ MODEL_PATH = "pretrained_models/film_net/Style/saved_model"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-
 def load_image(path):
     img = util.read_image(path)
     img = tf.image.convert_image_dtype(img, tf.float32)
