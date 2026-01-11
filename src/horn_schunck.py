@@ -4,7 +4,7 @@ import os
 from glob import glob
 import matplotlib.pyplot as plt
 
-from utils.utils import evaluate
+from utils.metrics import evaluate
 
 INPUT_DIR = "mickey_original"
 OUTPUT_DIR = "output_horn"
@@ -20,12 +20,37 @@ def local_average(Z):
         np.roll(Z, -1, axis=1)
     )
 
-def horn_schunck_grad(
-    Ix, Iy, It,
-    alpha=1.0,
-    max_iter=1000,
-    eps=1e-4
-):
+# def horn_schunck_grad(
+#     Ix, Iy, It,
+#     alpha=1.0,
+#     max_iter=1000,
+#     eps=1e-4
+# ):
+#     u = np.zeros_like(Ix)
+#     v = np.zeros_like(Iy)
+
+#     for _ in range(max_iter):
+#         u_bar = local_average(u)
+#         v_bar = local_average(v)
+
+#         A = Ix * u_bar + Iy * v_bar + It
+#         B = alpha**2 + Ix**2 + Iy**2
+
+#         u_new = u_bar - Ix * A / B
+#         v_new = v_bar - Iy * A / B
+
+#         # convergence criteria
+#         if max(
+#             np.max(np.abs(u_new - u)),
+#             np.max(np.abs(v_new - v))
+#         ) < eps:
+#             break
+
+#         u, v = u_new, v_new
+
+#     return u, v
+
+def horn_schunck_grad(Ix, Iy, It, alpha=1.0, max_iter=1000, eps=1e-4):
     u = np.zeros_like(Ix)
     v = np.zeros_like(Iy)
 
@@ -36,20 +61,16 @@ def horn_schunck_grad(
         A = Ix * u_bar + Iy * v_bar + It
         B = alpha**2 + Ix**2 + Iy**2
 
-        u_new = u_bar - Ix * A / B
-        v_new = v_bar - Iy * A / B
+        u_new = u_bar - Ix * A / (B + 1e-6)
+        v_new = v_bar - Iy * A / (B + 1e-6)
 
-        # convergence criteria
-        if max(
-            np.max(np.abs(u_new - u)),
-            np.max(np.abs(v_new - v))
-        ) < eps:
+        if max(np.max(np.abs(u_new - u)), np.max(np.abs(v_new - v))) < eps:
             break
 
         u, v = u_new, v_new
 
     return u, v
-
+    
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
