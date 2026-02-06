@@ -32,7 +32,20 @@ python make_movie.py \
   --output_video movies/anim_farneback.mp4
 ```
 
-## 3 - FILM: Frame Interpolation for Large Motion
+
+## 3 - UNet + Horn-Schunck : Résiduals Learning with DL
+
+```bash
+python -m src.train_horn_unet
+```
+
+```bash
+python -m src.horn_DL
+```
+
+
+
+## 4 - FILM: Frame Interpolation for Large Motion
 ```
 git clone https://github.com/google-research/frame-interpolation
 cd frame-interpolation
